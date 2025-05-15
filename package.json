@@ -1,0 +1,12 @@
+{
+  "name": "anandgayatri",
+  "version": "1.0.0",
+  "description": "A romantic web animation love story of Anand and Gayatri.",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {}
+}
